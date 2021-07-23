@@ -36,7 +36,7 @@ function startApplication() {
         } else if (res.option === "view departments") {
             findDepartments();
         } else if (res.option === "add employee") {
-
+            newEmployee();
         } else if (res.option === "add role") {
 
         } else if (res.option === "add department") {
@@ -67,4 +67,39 @@ function findDepartments() {
         console.table(res)
     })
 
+}
+
+function newEmployee() {
+    inquirer.prompt([
+        {
+            name: "first",
+            type: "input",
+            message: "What is the new employee name?"
+        },
+        {
+            name: "last",
+            type: "input",
+            message: "What is the new employee last name?"
+        },
+        {
+            name: "position",
+            type: "list",
+            message: "What is the new employee position?",
+            choices: [
+                "Engineer",
+                "Sales",
+                "Finance"
+            ]
+        }
+    ]).then(function (response){
+        connection.query("SELECT * FROM role WHERE ?",{title: response.position},function(err, res){
+            const id = res[0].id;
+            connection.query("INSERT INTO employee SET ?",{ first_name: response.first, last_name: response.last, role_id: id},function(err){
+                if(err) throw err;
+                console.log("welcome new employee!")
+            }
+            )
+        }
+        )
+    })
 }
