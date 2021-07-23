@@ -31,23 +31,39 @@ function startApplication() {
     }).then(function (res) {
         if (res.option === "view employees") {
             findEmployees();
-        }else if (res.option ==="view roles"){
+        } else if (res.option === "view roles") {
+            findRoles();
+        } else if (res.option === "view departments") {
+            findDepartments();
+        } else if (res.option === "add employee") {
 
-        }else if (res.option ==="view departments"){
-            
-        }else if (res.option ==="add employee"){
-            
-        }else if (res.option ==="add role"){
-            
-        }else if (res.option ==="add department"){
-            
+        } else if (res.option === "add role") {
+
+        } else if (res.option === "add department") {
+
         }
     })
 };
 
-function findEmployees(){
+function findEmployees() {
     const request = "SELECT employee.id, first_name, last_name, title, salary FROM employee AS employee LEFT JOIN role AS role ON employee.role_id = role.id;";
-    connection.query(request, function(err, res){
+    connection.query(request, function (err, res) {
+        console.table(res)
+    })
+
+}
+
+function findRoles() {
+    const request = "SELECT role.id, title, salary, name AS department FROM role AS role LEFT JOIN department AS department ON role.department_id = department.id;";
+    connection.query(request, function (err, res) {
+        console.table(res)
+    })
+
+}
+
+function findDepartments() {
+    const request = "SELECT * FROM department;"
+    connection.query(request, function (err, res) {
         console.table(res)
     })
 
