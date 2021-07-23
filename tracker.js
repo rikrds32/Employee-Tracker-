@@ -38,7 +38,7 @@ function startApplication() {
         } else if (res.option === "add employee") {
             newEmployee();
         } else if (res.option === "add role") {
-
+            newPosition();
         } else if (res.option === "add department") {
 
         }
@@ -97,6 +97,41 @@ function newEmployee() {
             connection.query("INSERT INTO employee SET ?",{ first_name: response.first, last_name: response.last, role_id: id},function(err){
                 if(err) throw err;
                 console.log("welcome new employee!")
+            }
+            )
+        }
+        )
+    })
+}
+
+function newPosition() {
+    inquirer.prompt([
+        {
+            name: "title",
+            type: "input",
+            message: "What is the new employee title?"
+        },
+        {
+            name: "salary",
+            type: "input",
+            message: "What is the new employee salary?"
+        },
+        {
+            name: "department",
+            type: "list",
+            message: "What is the new employee department?",
+            choices: [
+                "Engineer",
+                "Sales",
+                "Finance"
+            ]
+        }
+    ]).then(function (response){
+        connection.query("SELECT * FROM department WHERE ?",{name: response.department},function(err, res){
+            const id = res[0].id;
+            connection.query("INSERT INTO role SET ?",{ title: response.title, salary: response.salary, department_id: id},function(err){
+                if(err) throw err;
+                console.log("new employee position!")
             }
             )
         }
