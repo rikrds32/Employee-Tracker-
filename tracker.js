@@ -40,7 +40,7 @@ function startApplication() {
         } else if (res.option === "add role") {
             newPosition();
         } else if (res.option === "add department") {
-
+            newDepartment();
         }
     })
 };
@@ -136,5 +136,20 @@ function newPosition() {
             )
         }
         )
+    })
+}
+
+function newDepartment(){
+    inquirer.prompt([
+        {
+        name: "name",
+        type: "input",
+        message: "what is the new employee department?"
+        }
+    ]).then(function (response){
+        connection.query("INSERT INTO department SET ?", { name: response.name }, function(err, res){
+            if (err)throw err;
+            console.log("new employee department!");
+        })
     })
 }
