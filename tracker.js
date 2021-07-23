@@ -12,6 +12,7 @@ const connection = mysql.createConnection({
 connection.connect(function (err) {
     if (err) throw err;
     console.log("connected as" + connection.threadId)
+    startApplication();
 });
 
 function startApplication() {
@@ -19,7 +20,7 @@ function startApplication() {
         name: "option",
         type: "list",
         message: "Please select an option bellow",
-        choice: [
+        choices: [
             "view employees",
             "view roles",
             "view departments",
@@ -29,7 +30,7 @@ function startApplication() {
         ]
     }).then(function (res) {
         if (res.option === "view employees") {
-
+            findEmployees();
         }else if (res.option ==="view roles"){
 
         }else if (res.option ==="view departments"){
@@ -43,3 +44,11 @@ function startApplication() {
         }
     })
 };
+
+function findEmployees(){
+    const request = "SELECT employee.id, first_name, last_name, title, salary FROM employee AS employee LEFT JOIN role AS role ON employee.role_id = role.id;";
+    connection.query(request, function(err, res){
+        console.table(res)
+    })
+
+}
